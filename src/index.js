@@ -38,7 +38,7 @@ function getProfileLink(name){
             headless:true,
             // executablePath: '/usr/bin/google-chrome',
             args:[
-                // `--proxy-server=${newProxyUrl}`,
+                `--proxy-server=${newProxyUrl}`,
                 '--no-sandbox',
                 "--incognito", "--start-maximized"
             ]
