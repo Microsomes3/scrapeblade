@@ -30,7 +30,7 @@ function getProfileLink(name){
         const url = "https://socialblade.com/youtube/channel/@"+name;
 
         const browser =  await puppeteer.launch({
-            headless:false,
+            headless:true,
             // executablePath: '/usr/bin/google-chrome',
             args:[
                 '--no-sandbox',
@@ -57,7 +57,10 @@ function getProfileLink(name){
         })
         
     
+        await page.waitForTimeout(1000);
+
         const link = await page.evaluate(()=>{
+    
            return  document.getElementById("YouTubeUserTopInfoAvatar").src
         })
 
