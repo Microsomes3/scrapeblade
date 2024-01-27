@@ -38,7 +38,7 @@ function getProfileLink(name){
             headless:true,
             // executablePath: '/usr/bin/google-chrome',
             args:[
-                `--proxy-server=${newProxyUrl}`,
+                // `--proxy-server=${newProxyUrl}`,
                 '--no-sandbox',
                 "--incognito", "--start-maximized"
             ]
@@ -71,9 +71,19 @@ function getProfileLink(name){
            return  document.getElementById("YouTubeUserTopInfoAvatar").src
         })
 
+
+        const subCount = await page.evaluate(()=>{
+            return document.querySelector("#YouTubeUserTopInfoBlock > div:nth-child(3) > span:nth-child(3)").textContent
+        })
+
+        console.log(subCount);
+
         await browser.close()
     
-        resolve(link)
+        resolve({
+            link: link,
+            subCount:subCount
+        })
     }catch(err){
         reject(err)
     }
@@ -128,11 +138,11 @@ if(!callbackurl){
     console.log("running...:")
     setTimeout(()=>{
         console.log("boom")
-        getProfileLink(channel).then(async (link)=>{
-            console.log(link);
+        getProfileLink(channel).then(async (data)=>{
+            console.log(data);
 
 
-            await downloadFile(link, "image.jpeg")
+            await downloadFile(data.link, "image.jpeg")
 
             const params = {
                 Bucket: "griffin-record-input",
@@ -145,7 +155,8 @@ if(!callbackurl){
 
           await  axios.post(callbackurl,{
             url:loci,
-            channel: channel
+            channel: channel,
+            subs: data.subCount
            })
 
 
