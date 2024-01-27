@@ -16,14 +16,20 @@ xvfb.stderr.on('data', (data) => {
     console.log(`stderr: ${data}`);
 });
 
-const pupeteer = require("puppeteer");
+const puppeteer = require('puppeteer-extra')
+// add stealth plugin and use defaults (all evasion techniques)
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+puppeteer.use(StealthPlugin())
+
+
+
 function getProfileLink(name){
     return new Promise(async (resolve,reject)=>{
 
         try{
         const url = "https://socialblade.com/youtube/channel/@"+name;
 
-        const browser =  await pupeteer.launch({
+        const browser =  await puppeteer.launch({
             headless:false,
             // executablePath: '/usr/bin/google-chrome',
             args:[
@@ -49,6 +55,7 @@ function getProfileLink(name){
         await page.goto(url,{
             waitUntil: "networkidle2"
         })
+        
     
         const link = await page.evaluate(()=>{
            return  document.getElementById("YouTubeUserTopInfoAvatar").src
@@ -135,6 +142,9 @@ if(!callbackurl){
 
 
             process.exit(0);
+        }).catch((err)=>{
+            console.log(err)
+            process.exit(1);
         })
     },5000)
 })()
