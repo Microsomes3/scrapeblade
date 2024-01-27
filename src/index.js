@@ -3,6 +3,8 @@ const { spawn } = require('child_process');
 const axios = require('axios');
 const fs = require('fs');
 const aws = require("aws-sdk")
+const proxyChain = require('proxy-chain');
+
 
 const uploader = require("./upload").manageUploadST;
 
@@ -29,10 +31,14 @@ function getProfileLink(name){
         try{
         const url = "https://socialblade.com/youtube/channel/@"+name;
 
+        const oldProxyUrl = 'http://tayyan54_gmail_com-country-any-sid-ffqk0oltjl-filter-medium:ovrya564ex@gate.nodemaven.com:8080';
+        const newProxyUrl = await proxyChain.anonymizeProxy(oldProxyUrl);
+
         const browser =  await puppeteer.launch({
             headless:true,
             // executablePath: '/usr/bin/google-chrome',
             args:[
+                `--proxy-server=${newProxyUrl}`,
                 '--no-sandbox',
                 "--incognito", "--start-maximized"
             ]
@@ -43,7 +49,7 @@ function getProfileLink(name){
     
         page.on('request', function(req){
     
-            if(req.resourceType() == 'sklmcript'){
+            if(req.resourceType() == 'script' || req.resourceType() == 'image' || req.resourceType() == 'font'){
                 req.abort();
             }else{
     

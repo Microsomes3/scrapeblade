@@ -12,6 +12,7 @@
   "dependencies": {
     "aws-sdk": "^2.1544.0",
     "axios": "^1.6.7",
+    "proxy-chain": "^2.4.0",
     "pupeteer": "^0.0.1",
     "puppeteer": "^21.9.0",
     "puppeteer-extra": "^3.3.6",
