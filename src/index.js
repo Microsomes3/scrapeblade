@@ -34,6 +34,7 @@ function getProfileLink(name){
             // executablePath: '/usr/bin/google-chrome',
             args:[
                 '--no-sandbox',
+                "--incognito", "--start-maximized"
             ]
         });
     
@@ -42,7 +43,7 @@ function getProfileLink(name){
     
         page.on('request', function(req){
     
-            if(req.resourceType() == 'script'){
+            if(req.resourceType() == 'sklmcript'){
                 req.abort();
             }else{
     
@@ -57,7 +58,7 @@ function getProfileLink(name){
         })
         
     
-        await page.waitForTimeout(1000);
+        await page.waitForSelector("#YouTubeUserTopInfoAvatar");
 
         const link = await page.evaluate(()=>{
     
